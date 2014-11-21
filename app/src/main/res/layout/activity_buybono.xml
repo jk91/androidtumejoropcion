@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/buy_bono"
+        android:text="@string/comprar_bono"
+        android:textSize="12pt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/store_name"
+        android:text="@string/store_name_text"
+        android:textSize="10pt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buy_bono"
+        android:layout_below="@+id/buy_bono"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/friend_mail"
+        android:text="@string/friend_mail_text"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/store_name"
+        android:layout_alignLeft="@+id/store_name"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/value_bono"
+        android:text="@string/value_bono_text"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_alignLeft="@+id/friend_mail"
+        android:layout_below="@+id/friend_mail"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/buy_bono_button"
+        android:text="@string/buy_bono_button_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/value_bono"
+        android:layout_marginTop="20dp"/>
+
+
+
+</RelativeLayout>
