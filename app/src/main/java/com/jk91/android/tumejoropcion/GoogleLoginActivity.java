@@ -1,12 +1,10 @@
 package com.jk91.android.tumejoropcion;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -24,7 +22,7 @@ import com.google.android.gms.plus.model.people.PersonBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoogleLoginActivity extends Activity implements View.OnClickListener,
+public class GoogleLoginActivity extends ActionBarActivity implements View.OnClickListener,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         ResultCallback<People.LoadPeopleResult> {
 
@@ -33,6 +31,7 @@ public class GoogleLoginActivity extends Activity implements View.OnClickListene
     private ConnectionResult mConnectionResult;
     private boolean mIntentInProgress;
     private boolean mSignInClicked;
+    private boolean signOut;
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -48,6 +47,11 @@ public class GoogleLoginActivity extends Activity implements View.OnClickListene
 
         btnSignIn = (SignInButton) findViewById(R.id.login_button);
         btnSignIn.setOnClickListener(this);
+
+        Bundle bundle = this.getIntent().getExtras();
+        if(bundle != null) {
+            signOut = bundle.getBoolean("logout");
+        }
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -84,7 +88,6 @@ public class GoogleLoginActivity extends Activity implements View.OnClickListene
             GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), this, 0).show();
             return;
         }
-
         if(!mIntentInProgress) {
             mConnectionResult = result;
 
@@ -113,13 +116,21 @@ public class GoogleLoginActivity extends Activity implements View.OnClickListene
     @Override
     public void onConnected(Bundle arg0) {
         mSignInClicked = false;
-        Toast.makeText(this, "User is Connected!", Toast.LENGTH_LONG).show();
-        if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-            Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-            userId = currentPerson.getId();
+        if (mGoogleApiClient.isConnected() && signOut == true) {
+            mGoogleApiClient.disconnect();
+            mGoogleApiClient.connect();
+            finish();
+            startActivity(getIntent());
         }
-        Plus.PeopleApi.loadVisible(mGoogleApiClient, null)
-                .setResultCallback(this);
+        else {
+            Toast.makeText(this, "User is Connected!", Toast.LENGTH_LONG).show();
+            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+                Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+                userId = currentPerson.getId();
+            }
+            Plus.PeopleApi.loadVisible(mGoogleApiClient, null)
+                    .setResultCallback(this);
+        }
     }
 
     @Override
@@ -187,7 +198,7 @@ public class GoogleLoginActivity extends Activity implements View.OnClickListene
     }
 
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.google_login, menu);
@@ -204,5 +215,5 @@ public class GoogleLoginActivity extends Activity implements View.OnClickListene
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
+    } */
 }

@@ -29,10 +29,12 @@
         </activity>
 
         <activity android:name=".FriendsActivity"
-                  android:label="Amigos" />
+                  android:label="Amigos"
+                  android:theme="@android:style/Theme.Holo.Light.DarkActionBar" />
 
         <activity android:name=".StoreActivity"
-                  android:label="Tiendas" />
+                  android:label="Tiendas"
+                  android:theme="@android:style/Theme.Holo.Light.DarkActionBar" />
 
         <activity android:name=".BuyBonoActivity"
                   android:label="Comprar Bono" />

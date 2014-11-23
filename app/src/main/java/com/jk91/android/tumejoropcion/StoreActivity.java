@@ -89,7 +89,10 @@ public class StoreActivity extends ListActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_logout) {
+            Intent intent = new Intent(this, GoogleLoginActivity.class);
+            intent.putExtra("logout", true);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);

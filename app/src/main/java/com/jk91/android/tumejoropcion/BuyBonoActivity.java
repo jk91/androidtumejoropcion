@@ -1,8 +1,9 @@
 package com.jk91.android.tumejoropcion;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +25,7 @@ import org.springframework.web.client.RestTemplate;
 /**
  * Created by jk91 on 14-11-21.
  */
-public class BuyBonoActivity extends Activity implements View.OnClickListener {
+public class BuyBonoActivity extends ActionBarActivity implements View.OnClickListener {
 
     private String friendName;
     private String friendId;
@@ -75,7 +76,10 @@ public class BuyBonoActivity extends Activity implements View.OnClickListener {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_logout) {
+            Intent intent = new Intent(this, GoogleLoginActivity.class);
+            intent.putExtra("logout", true);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
