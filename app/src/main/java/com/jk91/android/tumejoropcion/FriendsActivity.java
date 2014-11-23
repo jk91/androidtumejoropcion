@@ -20,6 +20,8 @@ public class FriendsActivity extends ListActivity {
 
     private List<String> peopleNames;
     private List<String> peopleIds;
+    private ArrayAdapter<String> peopleAdapter;
+    private String userId;
 
     private final String LOG_TAG = "FriendsActivity";
 
@@ -29,30 +31,35 @@ public class FriendsActivity extends ListActivity {
         setContentView(R.layout.activity_friends);
 
         Bundle bundle = this.getIntent().getExtras();
+        userId = bundle.getString("userId");
         peopleNames = new ArrayList<String>();
         peopleIds = new ArrayList<String>();
         if (bundle != null) {
+            peopleNames.clear();
+            peopleIds.clear();
             int peopleSize = bundle.getInt("peopleSize");
             for (int i = 0; i < peopleSize; i++) {
                 peopleNames.add(bundle.getString("person" + i));
-                peopleIds.add(bundle.getString("id" + 1));
+                peopleIds.add(bundle.getString("id" + i));
                 Log.v(LOG_TAG, "Name: " + peopleNames.get(i));
                 Log.v(LOG_TAG, "Id: " + peopleIds.get(i));
             }
             Log.v(LOG_TAG, "Get Bundle Success!");
         }
 
-        ArrayAdapter<String> peopleAdapter = new ArrayAdapter<String>(this,
+        peopleAdapter = new ArrayAdapter<String>(this,
                 R.layout.list_item_person, R.id.list_item_person_textview, peopleNames);
-
         setListAdapter(peopleAdapter);
     }
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        String person = (String) l.getItemAtPosition(position);
-        Intent intent = new Intent(this, BuyBonoActivity.class);
-        intent.putExtra("personName", person);
+        String friend = (String) l.getItemAtPosition(position);
+        String friendId = peopleIds.get(peopleNames.indexOf(friend));
+        Intent intent = new Intent(this, StoreActivity.class);
+        intent.putExtra("userId", userId);
+        intent.putExtra("friendName", friend);
+        intent.putExtra("friendId", friendId);
         startActivity(intent);
     }
 

@@ -1,43 +1,30 @@
 package com.jk91.android.tumejoropcion.entity;
 
-import java.util.List;
-
 /**
  * Created by jk91 on 14-11-21.
  */
 public class GPlusPerson {
 
-    private String id;
-    private String name;
-    private String mail;
-    private List<String> mentions;
+    private String idSocial;
+    private String displayName;
+    private String tipoCuenta;
+    private Store[] tiendasMencionadas;
 
-    public GPlusPerson(String name, String id) {
-        this.id = id;
-        this.name = name;
+    public String getIdSocial() { return idSocial; }
+
+    public void setIdSocial(String idSocial) { this.idSocial = idSocial;}
+
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public String getId() { return id; }
+    public void setDisplayName(String displayName) { this.displayName = displayName; }
 
-    public void setId(String id) { this.id = id;}
+    public String getTipoCuenta() { return tipoCuenta; }
 
-    public String getName() {
-        return name;
-    }
+    public void setTipoCuenta(String tipoCuenta) { this.tipoCuenta = tipoCuenta; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public Store[] getTiendasMencionadas() { return tiendasMencionadas; }
 
-    public String getMail() { return mail; }
-
-    public void setMail(String mail) { this.mail = mail; }
-
-    public List getMentions() {
-        return mentions;
-    }
-
-    public void addMention(String mention) {
-        mentions.add(mention);
-    }
+    public void setTiendasMencionadas(Store[] tiendasMencionadas) { this.tiendasMencionadas = tiendasMencionadas; }
 }

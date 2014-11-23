@@ -18,6 +18,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
 import com.google.android.gms.plus.model.people.PersonBuffer;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class GoogleLoginActivity extends Activity implements View.OnClickListene
 
     private SignInButton btnSignIn;
 
+    private String userId;
     private static List<String[]> people;
 
     @Override
@@ -112,6 +114,10 @@ public class GoogleLoginActivity extends Activity implements View.OnClickListene
     public void onConnected(Bundle arg0) {
         mSignInClicked = false;
         Toast.makeText(this, "User is Connected!", Toast.LENGTH_LONG).show();
+        if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+            Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+            userId = currentPerson.getId();
+        }
         Plus.PeopleApi.loadVisible(mGoogleApiClient, null)
                 .setResultCallback(this);
     }
@@ -168,6 +174,7 @@ public class GoogleLoginActivity extends Activity implements View.OnClickListene
 
     private void generateFriendsList() {
         Intent intent = new Intent(GoogleLoginActivity.this, FriendsActivity.class);
+        intent.putExtra("userId", userId);
         intent.putExtra("peopleSize", people.size());
         Log.v(LOG_TAG, Integer.toString(people.size()));
         for(int i=0; i<people.size(); i++) {
