@@ -13,12 +13,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONObject;
+import com.jk91.android.tumejoropcion.entity.RequestBono;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -31,6 +33,8 @@ public class BuyBonoActivity extends ActionBarActivity implements View.OnClickLi
     private String friendId;
     private String storeName;
     private String userId;
+
+    private final String ACCOUNT_TYPE = "Google+";
 
     private Button buyBonoButton;
 
@@ -94,34 +98,34 @@ public class BuyBonoActivity extends ActionBarActivity implements View.OnClickLi
 
             final String LOG_TAG = "BuyBono";
 
-            JSONObject bono = new JSONObject();
             EditText bonoValorInput = (EditText) findViewById(R.id.value_bono);
-            long bonoValor = Long.valueOf(bonoValorInput.getText().toString()).longValue();
+            String bonoValor = bonoValorInput.getText().toString();
+
+            RequestBono bono = new RequestBono();
+            bono.setGoogleId(userId);
+            bono.setValor(bonoValor);
+            bono.setLoginTienda(storeName);
+            bono.setIdCuentaUsuario("");
+            bono.setTipoUsuario(ACCOUNT_TYPE);
+            bono.setIdAmigo(friendId);
+            bono.setTipoAmigo(ACCOUNT_TYPE);
 
             try{
-                bono.put("valor", bonoValor);
-                bono.put("loginTienda", storeName);
-                bono.put("idCuentaUsuario", userId);
-                bono.put("tipoUsuario", "GOOGLE_PLUS");
-                bono.put("idAmigo", friendId);
-                bono.put("tipoAmigo", "GOOGLE_PLUS");
-
-                Log.v(LOG_TAG, bono.toString());
-
-                final String URL = "http://172.24.98.151/:8080/TuMejorOpcion-web/webresources/bonos/comprarBono";
+                final String URL = "http://172.24.98.151/:8080/TuMejorOpcion-web/webresources/bonos/comprarBono2";
 
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
 
-                HttpEntity<String> entity = new HttpEntity<String>(bono.toString(), headers);
-                ResponseEntity<String> response = restTemplate.exchange(URL, HttpMethod.PUT, entity, String.class);
+                HttpEntity<RequestBono> entity = new HttpEntity<RequestBono>(bono, headers);
+                ResponseEntity<String> response = restTemplate.exchange(URL, HttpMethod.POST, entity, String.class);
                 response.getHeaders().getLocation();
                 response.getStatusCode();
 
-                Log.v(LOG_TAG, response.getBody());
+                Log.v(LOG_TAG, "Bono Response: "+response.getBody());
 
             } catch(Exception e) {
                 Log.e(LOG_TAG, e.getMessage(), e);
