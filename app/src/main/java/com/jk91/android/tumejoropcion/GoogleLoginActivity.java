@@ -219,13 +219,9 @@ public class GoogleLoginActivity extends ActionBarActivity implements View.OnCli
                 response.getStatusCode();
                 Log.v(LOG_TAG, response.getBody());
 
-                if(response.getBody().equals("OUTDATED_FRIENDS")) {
-                    Plus.PeopleApi.loadVisible(mGoogleApiClient, null)
-                            .setResultCallback(this);
-                }
-                else if(response.getBody().equals("OK")) {
+                Plus.PeopleApi.loadVisible(mGoogleApiClient, null)
+                        .setResultCallback(this);
 
-                }
             } catch(Exception e) {
                 Log.e(LOG_TAG, e.getMessage(), e);
             }
